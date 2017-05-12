@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Feedlin</string>
+    <string name="feeds_error_loading">Oops! Error loading feeds :(</string>
+    <string name="feeds_empty">No feeds at this moment</string>
+    <string name="copyright">© BBC News</string>
+    <string name="share_title">Share feed</string>
+</resources>
