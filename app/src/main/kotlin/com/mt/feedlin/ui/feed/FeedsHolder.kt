@@ -2,10 +2,11 @@ package com.mt.feedlin.ui.feed
 
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.View
+import com.bumptech.glide.Glide
+import com.mt.feedlin.R
 import com.mt.feedlin.data.Feed
 import com.mt.feedlin.util.ClickListener
 import com.mt.feedlin.util.date
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_feed.view.*
 
 /**
@@ -20,7 +21,9 @@ internal class FeedsHolder(val view: View) : ViewHolder(view) {
     }
 
     fun bind(item: Feed, listener: ClickListener<Feed>) {
-        Picasso.with(view.context).load(item.url).into(view.image)
+        Glide.with(view.context).load(item.url)
+                .placeholder(R.drawable.ic_photo)
+                .centerCrop().into(view.image)
 
         view.title.text = item.title
         view.description.text = item.description

@@ -77,5 +77,5 @@ dependencies {
     provided "org.glassfish:javax.annotation:$glassfish_version"
 
     // Image processing
-    compile "com.squareup.picasso:picasso:$picasso_version"
+    compile "com.github.bumptech.glide:glide:$glide_version"
 }

@@ -11,7 +11,7 @@ import java.util.Locale.ENGLISH
  * Created by max on 10-May-17.
  */
 
-fun <T> Flowable<T>.network(): Flowable<T> {
+fun <T> Flowable<T>.io(): Flowable<T> {
     return subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

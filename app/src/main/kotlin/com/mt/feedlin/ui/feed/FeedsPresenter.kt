@@ -4,7 +4,7 @@ import com.mt.feedlin.injection.scope.ActivityScope
 import com.mt.feedlin.network.FeedsService
 import com.mt.feedlin.ui.base.BaseAbstractPresenter
 import com.mt.feedlin.ui.navigator.BaseNavigator
-import com.mt.feedlin.util.network
+import com.mt.feedlin.util.io
 import javax.inject.Inject
 
 /**
@@ -24,7 +24,7 @@ class FeedsPresenter
         view?.showProgress(true)
         disposables.add(feedsService.getFeeds()
                 .map { it.channel?.feeds }
-                .network()
+                .io()
                 .subscribe(
                         {
                             if (it != null && !it.isEmpty())
