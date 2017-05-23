@@ -3,8 +3,7 @@ package com.mt.feedlin.ui.feed
 import com.mt.feedlin.injection.scope.ActivityScope
 import com.mt.feedlin.network.FeedsService
 import com.mt.feedlin.ui.base.BaseAbstractPresenter
-import com.mt.feedlin.ui.navigator.BaseNavigator
-import com.mt.feedlin.util.io
+import com.mt.feedlin.util.ext.io
 import javax.inject.Inject
 
 /**
@@ -13,8 +12,8 @@ import javax.inject.Inject
 
 @ActivityScope
 class FeedsPresenter
-@Inject constructor(val feedsService: FeedsService,
-                    val navigator: BaseNavigator) : BaseAbstractPresenter<FeedsView>() {
+@Inject constructor(val feedsService: FeedsService, val navigator: FeedsContract.Navigator)
+    : BaseAbstractPresenter<FeedsContract.View>(), FeedsContract.Presenter {
 
     override fun loadData() {
         loadFeeds()
@@ -40,4 +39,6 @@ class FeedsPresenter
                         }
                 ))
     }
+
+    override fun navigator() = navigator
 }

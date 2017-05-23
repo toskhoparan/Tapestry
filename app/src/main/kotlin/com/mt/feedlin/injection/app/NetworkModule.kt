@@ -1,4 +1,4 @@
-package com.mt.feedlin.injection.module
+package com.mt.feedlin.injection.app
 
 import com.mt.feedlin.BuildConfig
 import com.mt.feedlin.network.FeedsService

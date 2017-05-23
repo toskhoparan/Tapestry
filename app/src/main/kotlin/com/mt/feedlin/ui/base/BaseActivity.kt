@@ -4,23 +4,24 @@ import android.app.Activity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import com.mt.feedlin.FeedlinApplication
-import com.mt.feedlin.injection.component.ActivityComponent
+import com.mt.feedlin.injection.app.ApplicationComponent
 
 /**
  * Created by m_toskhoparan on 08-May-17.
  */
+
 abstract class BaseActivity<in V : BaseView, P : BasePresenter<V>> : Activity(), BaseView {
 
-    abstract fun setupComponent(component: ActivityComponent)
-    abstract var presenter: P
     abstract var layoutID: Int
+    abstract fun setupComponent(component: ApplicationComponent)
+    abstract var presenter: P
     abstract fun setupViews()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutID)
 
-        setupComponent((application as FeedlinApplication).applicationComponent.activityComponent())
+        setupComponent((application as FeedlinApplication).applicationComponent)
         presenter.attachView(this as V)
 
         setupViews()
@@ -42,6 +43,6 @@ abstract class BaseActivity<in V : BaseView, P : BasePresenter<V>> : Activity(),
     }
 
     override fun showMessage(message: Int) {
-        Snackbar.make(window.decorView, message, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show()
     }
 }

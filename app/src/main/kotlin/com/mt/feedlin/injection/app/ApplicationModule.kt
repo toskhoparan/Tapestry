@@ -1,4 +1,4 @@
-package com.mt.feedlin.injection.module
+package com.mt.feedlin.injection.app
 
 import android.app.Application
 import android.content.Context

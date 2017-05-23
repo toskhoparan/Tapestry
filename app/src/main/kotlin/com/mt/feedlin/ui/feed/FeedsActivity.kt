@@ -2,29 +2,33 @@ package com.mt.feedlin.ui.feed
 
 import com.mt.feedlin.R
 import com.mt.feedlin.data.Feed
-import com.mt.feedlin.injection.component.ActivityComponent
+import com.mt.feedlin.injection.app.ApplicationComponent
+import com.mt.feedlin.injection.feeds.DaggerFeedsComponent
+import com.mt.feedlin.injection.feeds.FeedsModule
 import com.mt.feedlin.ui.base.BaseActivity
-import com.mt.feedlin.util.hide
-import com.mt.feedlin.util.show
+import com.mt.feedlin.util.ext.hide
+import com.mt.feedlin.util.ext.show
 import com.mt.feedlin.ui.adapter.RecyclerAdapter
 import javax.inject.Inject
 import kotlinx.android.synthetic.main.activity_main.*
 
-class FeedsActivity : BaseActivity<FeedsView, FeedsPresenter>(), FeedsView {
-
-    @Inject override lateinit var presenter: FeedsPresenter
-
-    override fun setupComponent(component: ActivityComponent) = component.inject(this)
+class FeedsActivity : BaseActivity<FeedsContract.View, FeedsContract.Presenter>(), FeedsContract.View {
 
     override var layoutID = R.layout.activity_main
+    @Inject override lateinit var presenter: FeedsContract.Presenter
+    @Inject lateinit var adapter: RecyclerAdapter<FeedsHolder, Feed>
 
-    private var adapter: RecyclerAdapter<FeedsHolder, Feed>? = null
+    override fun setupComponent(component: ApplicationComponent) {
+        DaggerFeedsComponent.builder().applicationComponent(component)
+                .feedsModule(FeedsModule(this)).build().inject(this)
+    }
 
     override fun setupViews() {
-        adapter = RecyclerAdapter<FeedsHolder, Feed>(
-                FeedsHolder::class.java, R.layout.item_feed,
-                { holder, feed -> holder.bind(feed, { presenter.navigator.shareFeed(feed) }) })
-        adapter?.setHasStableIds(true)
+        adapter.apply {
+            layoutRes = R.layout.item_feed
+            binder = { holder, feed -> holder.bind(feed,
+                    { presenter.navigator().shareFeed(feed) }) }
+        }
 
         recyclerFeeds.setHasFixedSize(true)
         recyclerFeeds.adapter = adapter
@@ -32,7 +36,7 @@ class FeedsActivity : BaseActivity<FeedsView, FeedsPresenter>(), FeedsView {
 
     override fun showFeeds(feeds: MutableList<Feed>) {
         empty.hide(); error.hide(); recyclerFeeds.show()
-        adapter?.items = feeds
+        adapter.items = feeds
     }
 
     override fun showProgress(active: Boolean) {
