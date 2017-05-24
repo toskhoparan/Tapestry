@@ -1,6 +1,6 @@
 package com.mt.feedlin.ui.feed
 
-import com.mt.feedlin.data.Feed
+import com.mt.feedlin.data.model.Feed
 import com.mt.feedlin.ui.base.BaseNavigator
 import com.mt.feedlin.ui.base.BasePresenter
 import com.mt.feedlin.ui.base.BaseView
@@ -21,5 +21,6 @@ interface FeedsContract {
 
     interface Navigator : BaseNavigator {
         fun shareFeed(feed: Feed)
+        fun openLink(link: String?)
     }
 }

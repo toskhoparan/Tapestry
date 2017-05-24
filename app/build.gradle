@@ -30,6 +30,10 @@ android {
     applicationVariants.all { variant ->
         appendVersionNameVersionCode(variant, defaultConfig)
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 static def appendVersionNameVersionCode(variant, defaultConfig) {
@@ -78,4 +82,8 @@ dependencies {
 
     // Image processing
     compile "com.squareup.picasso:picasso:$picasso_version"
+
+    compile "android.arch.persistence.room:runtime:$room_version"
+    //compile "android.arch.persistence.room:rxjava2:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
 }

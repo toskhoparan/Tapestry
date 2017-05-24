@@ -1,7 +1,7 @@
 package com.mt.feedlin.ui.feed
 
 import com.mt.feedlin.R
-import com.mt.feedlin.data.Feed
+import com.mt.feedlin.data.model.Feed
 import com.mt.feedlin.injection.app.ApplicationComponent
 import com.mt.feedlin.injection.feeds.DaggerFeedsComponent
 import com.mt.feedlin.injection.feeds.FeedsModule
@@ -27,7 +27,8 @@ class FeedsActivity : BaseActivity<FeedsContract.View, FeedsContract.Presenter>(
         adapter.apply {
             layoutRes = R.layout.item_feed
             binder = { holder, feed -> holder.bind(feed,
-                    { presenter.navigator().shareFeed(feed) }) }
+                    { presenter.navigator().shareFeed(feed) },
+                    { presenter.navigator().openLink(feed.link)}) }
         }
 
         recyclerFeeds.setHasFixedSize(true)

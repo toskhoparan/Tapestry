@@ -1,6 +1,6 @@
 package com.mt.feedlin.injection.feeds
 
-import com.mt.feedlin.data.Feed
+import com.mt.feedlin.data.model.Feed
 import com.mt.feedlin.injection.scope.ActivityScope
 import com.mt.feedlin.ui.adapter.RecyclerAdapter
 import com.mt.feedlin.ui.feed.*

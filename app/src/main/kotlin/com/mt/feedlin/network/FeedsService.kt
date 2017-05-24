@@ -1,6 +1,6 @@
 package com.mt.feedlin.network
 
-import com.mt.feedlin.data.RSS
+import com.mt.feedlin.data.model.RSS
 import io.reactivex.Flowable
 import retrofit2.http.GET
 

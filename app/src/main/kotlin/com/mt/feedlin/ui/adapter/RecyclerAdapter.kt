@@ -18,6 +18,10 @@ class RecyclerAdapter<VH : ViewHolder, E>
     var layoutRes: Int? = null
     var binder: Binder<VH, E>? = null
     var items: MutableList<E> = ArrayList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     init {
         setHasStableIds(true)

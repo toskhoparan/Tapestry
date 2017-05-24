@@ -1,4 +1,4 @@
-package com.mt.feedlin.data
+package com.mt.feedlin.data.model
 
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.Root

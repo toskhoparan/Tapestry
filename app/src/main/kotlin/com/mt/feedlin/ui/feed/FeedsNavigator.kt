@@ -1,14 +1,17 @@
 package com.mt.feedlin.ui.feed
 
 import android.content.Intent
+import android.net.Uri
 import com.mt.feedlin.R
-import com.mt.feedlin.data.Feed
+import com.mt.feedlin.data.model.Feed
+import com.mt.feedlin.injection.scope.ActivityScope
 import javax.inject.Inject
 
 /**
  * Created by max on 12-May-17.
  */
 
+@ActivityScope
 class FeedsNavigator @Inject constructor(val activity: FeedsActivity) : FeedsContract.Navigator {
 
     companion object {
@@ -25,5 +28,9 @@ class FeedsNavigator @Inject constructor(val activity: FeedsActivity) : FeedsCon
         val chooserIntent = Intent.createChooser(sendIntent, activity.getString(R.string.share_title))
 
         activity.startActivity(chooserIntent)
+    }
+
+    override fun openLink(link: String?) {
+        activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
     }
 }
