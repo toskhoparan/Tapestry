@@ -21,6 +21,7 @@ class FeedsHolder(val view: View) : ViewHolder(view) {
 
     fun bind(item: Feed,
              listener: ClickListener<Feed>, linkListener: ClickListener<String?>) {
+
         view.image.load(item.url)
         view.title.text = item.title
         view.description.text = item.description

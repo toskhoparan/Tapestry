@@ -9,5 +9,5 @@ import io.reactivex.Flowable
 
 interface FeedsRepository {
 
-    fun loadFeeds(): Flowable<MutableList<Feed>>
+    fun loadFeeds(forceLoad: Boolean = true): Flowable<MutableList<Feed>>
 }

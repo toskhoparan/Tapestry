@@ -15,13 +15,11 @@ class FeedsPresenter
 @Inject constructor(val repository: FeedsRepository, val navigator: FeedsContract.Navigator)
     : BaseAbstractPresenter<FeedsContract.View>(), FeedsContract.Presenter {
 
-    override fun loadData() {
-        loadFeeds()
-    }
+    override fun loadData(refresh: Boolean) = loadFeeds(refresh)
 
-    private fun loadFeeds() {
+    private fun loadFeeds(refresh: Boolean) {
         view?.showProgress(true)
-        disposables.add(repository.loadFeeds()
+        disposables.add(repository.loadFeeds(refresh)
                 .io()
                 .subscribe(
                         {

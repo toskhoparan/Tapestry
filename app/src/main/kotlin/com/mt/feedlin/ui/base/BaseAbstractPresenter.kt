@@ -32,5 +32,5 @@ abstract class BaseAbstractPresenter<V : BaseView> : BasePresenter<V> {
         this.view = null
     }
 
-    abstract fun loadData()
+    abstract fun loadData(refresh: Boolean = false)
 }
