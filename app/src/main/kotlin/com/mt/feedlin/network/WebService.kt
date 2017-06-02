@@ -7,7 +7,7 @@ import retrofit2.http.GET
 /**
  * Created by m_toskhoparan on 08-May-17.
  */
-interface FeedsService {
+interface WebService {
 
     @GET("rss.xml")
     fun getFeeds() : Flowable<RSS>

@@ -1,16 +1,23 @@
-package com.mt.feedlin.ui.base
+package com.mt.feedlin.ui.base.view
 
-import android.app.Activity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AppCompatActivity
 import com.mt.feedlin.FeedlinApplication
 import com.mt.feedlin.injection.app.ApplicationComponent
+import com.mt.feedlin.ui.base.state.BaseState
+import com.mt.feedlin.ui.base.presenter.BaseStatefulPresenter
 
 /**
  * Created by m_toskhoparan on 08-May-17.
  */
 
-abstract class BaseActivity<in V : BaseView, P : BasePresenter<V>> : Activity(), BaseView {
+abstract class BaseActivity<in V : BaseView,
+    P : BaseStatefulPresenter<V, S>, S : BaseState> : AppCompatActivity(), BaseView {
+
+    companion object {
+        const val STATE_KEY = "STATE_KEY"
+    }
 
     abstract var layoutID: Int
     abstract fun setupComponent(component: ApplicationComponent)
@@ -25,6 +32,16 @@ abstract class BaseActivity<in V : BaseView, P : BasePresenter<V>> : Activity(),
         presenter.attachView(this as V)
 
         setupViews()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putParcelable(STATE_KEY, presenter.state)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        presenter.state = savedInstanceState?.getParcelable(STATE_KEY)
     }
 
     override fun onResume() {

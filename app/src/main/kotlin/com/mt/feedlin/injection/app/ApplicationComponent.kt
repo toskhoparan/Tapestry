@@ -7,7 +7,7 @@ import com.mt.feedlin.data.repository.FeedsRepository
 import com.mt.feedlin.injection.network.NetworkModule
 import com.mt.feedlin.injection.persistence.PersistenceModule
 import com.mt.feedlin.injection.repository.RepositoryModule
-import com.mt.feedlin.network.FeedsService
+import com.mt.feedlin.network.WebService
 import dagger.Component
 import javax.inject.Singleton
 
@@ -22,7 +22,7 @@ interface ApplicationComponent {
 
     val context: Context
 
-    val feedsService: FeedsService
+    val webService: WebService
 
     val appDatabase: AppDatabase
 

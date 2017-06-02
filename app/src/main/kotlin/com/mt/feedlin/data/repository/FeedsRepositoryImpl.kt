@@ -2,7 +2,7 @@ package com.mt.feedlin.data.repository
 
 import com.mt.feedlin.data.model.Feed
 import com.mt.feedlin.data.persistence.dao.FeedsDao
-import com.mt.feedlin.network.FeedsService
+import com.mt.feedlin.network.WebService
 import com.mt.feedlin.util.ext.toDate
 import io.reactivex.Flowable
 import javax.inject.Inject
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class FeedsRepositoryImpl
-@Inject constructor(val feedsService: FeedsService, val feedsDao: FeedsDao) : FeedsRepository {
+@Inject constructor(val webService: WebService, val feedsDao: FeedsDao) : FeedsRepository {
 
     companion object {
         const val REFRESH_TIME = 30 //seconds
@@ -28,16 +28,12 @@ class FeedsRepositoryImpl
         return loadLocalFeeds()
     }
 
-    private fun loadRemoteFeeds() = feedsService.getFeeds()
+    private fun loadRemoteFeeds() = webService.getFeeds()
             .map { it.channel?.feeds }
             .flatMap { Flowable.fromIterable(it) }
             .toSortedList { f1, f2 -> f2.pubDate.toDate().compareTo(f1.pubDate.toDate()) }
-            .map {
-                feedsDao.insertAll(it)
-                return@map it
-            }
             .doOnSuccess {
-                //feedsDao.insertAll(it)
+                feedsDao.insertAll(it)
                 lastUpdate = System.currentTimeMillis()
             }
             .toFlowable()

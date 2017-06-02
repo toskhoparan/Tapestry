@@ -2,7 +2,7 @@ package com.mt.feedlin.ui.feed
 
 import com.mt.feedlin.data.repository.FeedsRepository
 import com.mt.feedlin.injection.scope.ActivityScope
-import com.mt.feedlin.ui.base.BaseAbstractPresenter
+import com.mt.feedlin.ui.base.presenter.AbstractPresenter
 import com.mt.feedlin.util.ext.io
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class FeedsPresenter
 @Inject constructor(val repository: FeedsRepository,
                     val navigator: FeedsContract.Navigator)
-    : BaseAbstractPresenter<FeedsContract.View>(), FeedsContract.Presenter {
+    : AbstractPresenter<FeedsContract.View, FeedsContract.State>(), FeedsContract.Presenter {
 
     override fun loadData(refresh: Boolean) = loadFeeds(refresh)
 
@@ -25,7 +25,7 @@ class FeedsPresenter
                 .io()
                 .subscribe(
                     {
-                        if (!it.isEmpty()) view?.showFeeds(it)
+                        if (!it.isEmpty()) view?.showFeeds(it, state?.itemPosition)
                         else if (dataLoaded) view?.showEmpty()
                     },
                     {
@@ -38,6 +38,12 @@ class FeedsPresenter
                     }
                 )
         )
+    }
+
+    override var state: FeedsContract.State? = FeedsState()
+
+    override fun saveState(state: FeedsContract.State?) {
+        state?.itemPosition = view?.getItemPosition()
     }
 
     override fun navigator() = navigator
