@@ -23,20 +23,29 @@ class FeedsRepositoryImpl
     private var lastUpdate: Long = 0L
 
     override fun loadFeeds(forceLoad: Boolean): Flowable<MutableList<Feed>> {
-        if (forceLoad || requireRefresh()) return loadRemoteFeeds()
+        if (forceLoad || requireRefresh())
+            return loadRemoteFeeds().startWith(loadLocalFeeds())
         return loadLocalFeeds()
     }
 
     private fun loadRemoteFeeds() = feedsService.getFeeds()
-            .map { it.channel!!.feeds }
+            .map { it.channel?.feeds }
             .flatMap { Flowable.fromIterable(it) }
             .toSortedList { f1, f2 -> f2.pubDate.toDate().compareTo(f1.pubDate.toDate()) }
-            .doOnSuccess {
+            .map {
                 feedsDao.insertAll(it)
+                return@map it
+            }
+            .doOnSuccess {
+                //feedsDao.insertAll(it)
                 lastUpdate = System.currentTimeMillis()
-            }.toFlowable()
+            }
+            .toFlowable()
 
     private fun loadLocalFeeds() = Flowable.fromCallable { feedsDao.getAll() }
+            .flatMap { Flowable.fromIterable(it) }
+            .toSortedList { f1, f2 -> f2.pubDate.toDate().compareTo(f1.pubDate.toDate()) }
+            .toFlowable()
 
     private fun requireRefresh(): Boolean {
         if (lastUpdate == 0L) return true

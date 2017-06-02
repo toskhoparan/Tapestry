@@ -20,14 +20,15 @@ class FeedsHolder(val view: View) : ViewHolder(view) {
     }
 
     fun bind(item: Feed,
-             listener: ClickListener<Feed>, linkListener: ClickListener<String?>) {
+             listener: ClickListener<Feed>? = null,
+             linkListener: ClickListener<String?>? = null) {
 
         view.image.load(item.url)
         view.title.text = item.title
         view.description.text = item.description
         view.date.text = item.pubDate.formatDate(DATE_INPUT, DATE_OUTPUT)
 
-        view.share.setOnClickListener { listener(item) }
-        view.openLink.setOnClickListener { linkListener(item.link) }
+        view.share.setOnClickListener { listener?.let { it(item) } }
+        view.openLink.setOnClickListener { linkListener?.invoke(item.link) }
     }
 }

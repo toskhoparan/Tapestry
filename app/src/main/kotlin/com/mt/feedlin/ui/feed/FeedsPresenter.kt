@@ -12,29 +12,32 @@ import javax.inject.Inject
 
 @ActivityScope
 class FeedsPresenter
-@Inject constructor(val repository: FeedsRepository, val navigator: FeedsContract.Navigator)
+@Inject constructor(val repository: FeedsRepository,
+                    val navigator: FeedsContract.Navigator)
     : BaseAbstractPresenter<FeedsContract.View>(), FeedsContract.Presenter {
 
     override fun loadData(refresh: Boolean) = loadFeeds(refresh)
 
     private fun loadFeeds(refresh: Boolean) {
         view?.showProgress(true)
-        disposables.add(repository.loadFeeds(refresh)
+        subscriptions?.add(
+            repository.loadFeeds(refresh)
                 .io()
                 .subscribe(
-                        {
-                            if (!it.isEmpty())
-                                view?.showFeeds(it) else view?.showEmpty()
-                        },
-                        {
-                            view?.showProgress(false)
-                            if (!dataLoaded) view?.showError()
-                        },
-                        {
-                            view?.showProgress(false)
-                            dataLoaded = true
-                        }
-                ))
+                    {
+                        if (!it.isEmpty()) view?.showFeeds(it)
+                        else if (dataLoaded) view?.showEmpty()
+                    },
+                    {
+                        view?.showProgress(false)
+                        if (!dataLoaded) view?.showError()
+                    },
+                    {
+                        view?.showProgress(false)
+                        dataLoaded = true
+                    }
+                )
+        )
     }
 
     override fun navigator() = navigator

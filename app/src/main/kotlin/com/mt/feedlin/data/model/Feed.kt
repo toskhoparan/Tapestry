@@ -13,23 +13,38 @@ import org.simpleframework.xml.Path
 
 @Entity
 class Feed {
-        @PrimaryKey
-        @field:Element(required = false)
-        var title: String = ""
+    @PrimaryKey
+    @field:Element(required = false)
+    var title: String = ""
 
-        @field:Element(required = false)
-        var description: String = ""
+    @field:Element(required = false)
+    var description: String = ""
 
-        @field:Element(required = false)
-        var link: String = ""
+    @field:Element(required = false)
+    var link: String = ""
 
-        @field:Element(required = false)
-        @ColumnInfo(name = "pub_date")
-        var pubDate: String = ""
+    @field:Element(required = false)
+    @ColumnInfo(name = "pub_date")
+    var pubDate: String = ""
 
-        @field:Attribute(required = false)
-        @field:Path("media:thumbnail")
-        var url: String = ""
+    @field:Attribute(required = false)
+    @field:Path("media:thumbnail")
+    var url: String = ""
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+
+        other as Feed
+
+        if (title != other.title) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return title.hashCode()
+    }
 }
 
 // todo data class is not allowed here,

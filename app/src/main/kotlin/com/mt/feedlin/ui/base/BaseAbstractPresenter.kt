@@ -10,7 +10,7 @@ abstract class BaseAbstractPresenter<V : BaseView> : BasePresenter<V> {
 
     var view: V? = null
 
-    val disposables = CompositeDisposable()
+    var subscriptions: CompositeDisposable? = CompositeDisposable()
 
     var firstLoad = true
     var dataLoaded = false
@@ -25,11 +25,12 @@ abstract class BaseAbstractPresenter<V : BaseView> : BasePresenter<V> {
     }
 
     override fun unsubscribe() {
-        disposables.clear()
+        subscriptions?.clear()
     }
 
     override fun detachView() {
-        this.view = null
+        view = null
+        subscriptions = null
     }
 
     abstract fun loadData(refresh: Boolean = false)
