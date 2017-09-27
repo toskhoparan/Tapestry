@@ -1,4 +1,4 @@
-package com.mt.feedlin.data
+package com.mt.feedlin.data.model
 
 import org.simpleframework.xml.ElementList
 
@@ -8,5 +8,5 @@ import org.simpleframework.xml.ElementList
 
 data class Channel (
         @field:ElementList(entry = "item", inline = true, required = false)
-        var feeds: MutableList<Feed>? = null
+        var feeds: MutableList<Feed> = ArrayList()
 )

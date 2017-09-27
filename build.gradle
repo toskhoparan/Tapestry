@@ -8,18 +8,19 @@ buildscript {
     ext.firebase_version = '10.2.4'
     ext.rxjava_version = '2.1.0'
     ext.rxandroid_version = '2.0.1'
-    ext.retrofit_version = '2.2.0'
-    ext.okHttp_version = '3.7.0'
+    ext.retrofit_version = '2.3.0'
+    ext.okHttp_version = '3.8.0'
     ext.dagger_version = '2.10'
     ext.glassfish_version = '10.0-b28'
     ext.picasso_version = '2.5.2'
+    ext.room_version = '1.0.0-alpha1'
 
     repositories {
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:2.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -27,6 +28,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' }
     }
 }
 

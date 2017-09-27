@@ -1,4 +1,6 @@
-package com.mt.feedlin.ui.base
+package com.mt.feedlin.ui.base.presenter
+
+import com.mt.feedlin.ui.base.view.BaseView
 
 /**
  * Created by m_toskhoparan on 08-May-17.

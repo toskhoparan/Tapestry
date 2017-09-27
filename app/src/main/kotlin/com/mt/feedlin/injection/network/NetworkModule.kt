@@ -1,7 +1,7 @@
-package com.mt.feedlin.injection.module
+package com.mt.feedlin.injection.network
 
 import com.mt.feedlin.BuildConfig
-import com.mt.feedlin.network.FeedsService
+import com.mt.feedlin.network.WebService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -23,7 +23,7 @@ class NetworkModule {
     }
 
     @Provides @Singleton
-    fun provideFeedsService() : FeedsService {
+    fun provideFeedsService() : WebService {
 
         val interceptor = HttpLoggingInterceptor();
         interceptor.level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
@@ -39,6 +39,6 @@ class NetworkModule {
                 .baseUrl(BBC_API_URL)
                 .build()
 
-        return retrofit.create(FeedsService::class.java)
+        return retrofit.create(WebService::class.java)
     }
 }

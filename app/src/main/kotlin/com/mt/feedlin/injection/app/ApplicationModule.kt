@@ -1,6 +1,7 @@
-package com.mt.feedlin.injection.module
+package com.mt.feedlin.injection.app
 
 import android.app.Application
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -13,5 +14,5 @@ import javax.inject.Singleton
 class ApplicationModule constructor(val app: Application) {
 
     @Provides @Singleton
-    fun provideContext() = app.applicationContext
+    fun provideContext(): Context = app.applicationContext
 }

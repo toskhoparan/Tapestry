@@ -1,10 +1,9 @@
 package com.mt.feedlin.ui.feed
 
+import com.mt.feedlin.data.repository.FeedsRepository
 import com.mt.feedlin.injection.scope.ActivityScope
-import com.mt.feedlin.network.FeedsService
-import com.mt.feedlin.ui.base.BaseAbstractPresenter
-import com.mt.feedlin.ui.navigator.BaseNavigator
-import com.mt.feedlin.util.network
+import com.mt.feedlin.ui.base.presenter.AbstractPresenter
+import com.mt.feedlin.util.ext.io
 import javax.inject.Inject
 
 /**
@@ -13,31 +12,39 @@ import javax.inject.Inject
 
 @ActivityScope
 class FeedsPresenter
-@Inject constructor(val feedsService: FeedsService,
-                    val navigator: BaseNavigator) : BaseAbstractPresenter<FeedsView>() {
+@Inject constructor(val repository: FeedsRepository,
+                    val navigator: FeedsContract.Navigator)
+    : AbstractPresenter<FeedsContract.View, FeedsContract.State>(), FeedsContract.Presenter {
 
-    override fun loadData() {
-        loadFeeds()
-    }
+    override fun loadData(refresh: Boolean) = loadFeeds(refresh)
 
-    private fun loadFeeds() {
+    private fun loadFeeds(refresh: Boolean) {
         view?.showProgress(true)
-        disposables.add(feedsService.getFeeds()
-                .map { it.channel?.feeds }
-                .network()
+        subscriptions?.add(
+            repository.loadFeeds(refresh)
+                .io()
                 .subscribe(
-                        {
-                            if (it != null && !it.isEmpty())
-                                view?.showFeeds(it) else view?.showEmpty()
-                        },
-                        {
-                            view?.showProgress(false)
-                            if (!dataLoaded) view?.showError()
-                        },
-                        {
-                            view?.showProgress(false)
-                            dataLoaded = true
-                        }
-                ))
+                    {
+                        if (!it.isEmpty()) view?.showFeeds(it, state?.itemPosition)
+                        else if (dataLoaded) view?.showEmpty()
+                    },
+                    {
+                        view?.showProgress(false)
+                        if (!dataLoaded) view?.showError()
+                    },
+                    {
+                        view?.showProgress(false)
+                        dataLoaded = true
+                    }
+                )
+        )
     }
+
+    override var state: FeedsContract.State? = FeedsState()
+
+    override fun saveState(state: FeedsContract.State?) {
+        state?.itemPosition = view?.getItemPosition()
+    }
+
+    override fun navigator() = navigator
 }

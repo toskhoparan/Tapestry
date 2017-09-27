@@ -1,4 +1,4 @@
-package com.mt.feedlin.ui.base
+package com.mt.feedlin.ui.base.view
 
 import android.support.annotation.StringRes
 

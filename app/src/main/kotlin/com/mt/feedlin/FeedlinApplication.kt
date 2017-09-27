@@ -1,9 +1,9 @@
 package com.mt.feedlin
 
 import android.app.Application
-import com.mt.feedlin.injection.component.ApplicationComponent
-import com.mt.feedlin.injection.component.DaggerApplicationComponent
-import com.mt.feedlin.injection.module.ApplicationModule
+import com.mt.feedlin.injection.app.ApplicationComponent
+import com.mt.feedlin.injection.app.ApplicationModule
+import com.mt.feedlin.injection.app.DaggerApplicationComponent
 
 /**
  * Created by max on 05-May-17.
