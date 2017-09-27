@@ -1,5 +1,5 @@
 
-# Feedlin is a simple app created using Kotlin language and following technologies:
+# Tapestry is a simple app created using Kotlin language and following technologies:
 
 1. MVP Pattern
 2. RxJava/RxAndroid
