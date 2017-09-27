@@ -1,19 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
-        applicationId "com.mt.feedlin"
+        applicationId "com.mt.tapestry"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -25,10 +26,8 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
-    }
-
-    applicationVariants.all { variant ->
-        appendVersionNameVersionCode(variant, defaultConfig)
+        androidTest.java.srcDirs += "src/androidTest/kotlin"
+        test.java.srcDirs += "src/test/kotlin"
     }
 
     lintOptions {
@@ -36,53 +35,84 @@ android {
     }
 }
 
-static def appendVersionNameVersionCode(variant, defaultConfig) {
-    variant.outputs.each { output ->
-        def file = output.packageApplication.outputFile
-        def fileName = file.name.replace(".apk", "-feedlin-" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk")
-        output.packageApplication.outputFile = new File(file.parent, fileName)
-    }
+androidExtensions {
+    experimental = true
+}
+
+kapt {
+    generateStubs = true
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Kotlin
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${versions.kotlin}"
 
     // Android support libraries
-    compile "com.android.support:appcompat-v7:$support_library_version"
-    compile "com.android.support:support-v4:$support_library_version"
-    compile "com.android.support:design:$support_library_version"
-    compile "com.android.support:recyclerview-v7:$support_library_version"
-    compile "com.android.support:cardview-v7:$support_library_version"
-    compile "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    implementation "com.android.support:appcompat-v7:${versions.support_library}"
+    implementation "com.android.support:support-v4:${versions.support_library}"
+    implementation "com.android.support:design:${versions.support_library}"
+    implementation "com.android.support:recyclerview-v7:${versions.support_library}"
+    implementation "com.android.support:cardview-v7:${versions.support_library}"
 
-    // Firebase libraries: FCM (cloud messaging)
-    compile "com.google.firebase:firebase-core:$firebase_version"
+    implementation "com.android.support.constraint:constraint-layout:${versions.constraint_layout}"
+
+    // Room
+    implementation "android.arch.persistence.room:runtime:${versions.arch_comp}"
+    implementation "android.arch.persistence.room:rxjava2:${versions.arch_comp}"
+    kapt "android.arch.persistence.room:compiler:${versions.arch_comp}"
+
+    // Dependencies injection
+    implementation "com.google.dagger:dagger:${versions.dagger}"
+    implementation "com.google.dagger:dagger-android:${versions.dagger}"
+    implementation "com.google.dagger:dagger-android-support:${versions.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
+    kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
 
     // ReactiveX programming (https://github.com/ReactiveX/RxAndroid)
-    compile "io.reactivex.rxjava2:rxjava:$rxjava_version"
-    compile "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxjava:${versions.rx_java}"
+    implementation "io.reactivex.rxjava2:rxandroid:${versions.rx_android}"
 
     // Type-safe HTTP client
-    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
-    compile ("com.squareup.retrofit2:converter-simplexml:$retrofit_version", {
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
+    implementation ("com.squareup.retrofit2:converter-simplexml:${versions.retrofit}", {
         exclude group: 'xpp3', module: 'xpp3'
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'stax', module: 'stax'
     })
-    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
-    compile "com.squareup.okhttp3:logging-interceptor:$okHttp_version"
 
-    // Dependencies injection
-    compile "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    provided "org.glassfish:javax.annotation:$glassfish_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.ok_http}"
+
+    // Firebase
+    implementation "com.google.firebase:firebase-core:${versions.firebase}"
 
     // Image processing
-    compile "com.squareup.picasso:picasso:$picasso_version"
+    implementation "com.github.bumptech.glide:glide:${versions.glide}"
+    kapt "com.github.bumptech.glide:compiler:${versions.glide}"
 
-    compile "android.arch.persistence.room:runtime:$room_version"
-    kapt "android.arch.persistence.room:compiler:$room_version"
+    // Logger
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+
+    // Unit testing
+    testImplementation "android.arch.persistence.room:testing:${versions.arch_comp}"
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+
+    // Resolve conflicts between main and test APK:
+    androidTestImplementation "com.android.support:appcompat-v7:${versions.support_library}"
+    androidTestImplementation "com.android.support:recyclerview-v7:${versions.support_library}"
+    androidTestImplementation "com.android.support:support-v4:${versions.support_library}"
+    androidTestImplementation "com.android.support:design:${versions.support_library}"
+
+    // UI testing
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:${versions.espresso}", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestImplementation "com.android.support.test:runner:${versions.runner}"
+    androidTestImplementation "com.android.support.test:rules:${versions.runner}"
 }

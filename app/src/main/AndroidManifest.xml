@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mt.feedlin">
+    package="com.mt.tapestry">
 
     <application
-        android:name=".FeedlinApplication"
+        android:name="com.mt.tapestry.TapestryApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.feed.FeedsActivity"
+            android:name="com.mt.tapestry.ui.feed.FeedsActivity"
             android:theme="@style/AppTheme.Feeds">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
