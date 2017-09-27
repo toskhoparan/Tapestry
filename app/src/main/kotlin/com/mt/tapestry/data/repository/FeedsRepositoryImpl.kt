@@ -1,8 +1,8 @@
 package com.mt.tapestry.data.repository
 
-import com.mt.tapestry.data.model.Feed
+import com.mt.tapestry.data.entity.Feed
 import com.mt.tapestry.data.persistence.dao.FeedsDao
-import com.mt.tapestry.network.WebService
+import com.mt.tapestry.data.network.WebService
 import com.mt.tapestry.util.ext.toDate
 import io.reactivex.Flowable
 import javax.inject.Inject

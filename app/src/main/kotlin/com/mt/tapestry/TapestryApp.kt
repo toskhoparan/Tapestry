@@ -1,21 +1,25 @@
 package com.mt.tapestry
 
-import android.app.Application
-import com.mt.tapestry.injection.app.ApplicationComponent
-import com.mt.tapestry.injection.app.ApplicationModule
-import com.mt.tapestry.injection.app.DaggerApplicationComponent
+import com.mt.tapestry.injection.DaggerAppComponent
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
+import timber.log.Timber
 
 /**
  * Created by max on 05-May-17.
  */
 
-class TapestryApp : Application() {
-
-    lateinit var applicationComponent: ApplicationComponent
+class TapestryApp : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(this)).build()
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+    }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().create(this)
     }
 }

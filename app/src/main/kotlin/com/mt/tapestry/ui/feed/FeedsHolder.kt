@@ -2,7 +2,7 @@ package com.mt.tapestry.ui.feed
 
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.View
-import com.mt.tapestry.data.model.Feed
+import com.mt.tapestry.data.entity.Feed
 import com.mt.tapestry.util.ClickListener
 import com.mt.tapestry.util.ext.formatDate
 import com.mt.tapestry.util.ext.load

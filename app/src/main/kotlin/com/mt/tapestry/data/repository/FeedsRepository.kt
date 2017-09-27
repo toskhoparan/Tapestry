@@ -1,6 +1,6 @@
 package com.mt.tapestry.data.repository
 
-import com.mt.tapestry.data.model.Feed
+import com.mt.tapestry.data.entity.Feed
 import io.reactivex.Flowable
 
 /**
