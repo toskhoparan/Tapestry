@@ -3,6 +3,7 @@ package com.mt.tapestry.data.entity
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import com.mt.simplerecycler.AdapterItem
 import org.simpleframework.xml.Attribute
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.Path
@@ -12,7 +13,7 @@ import org.simpleframework.xml.Path
  */
 
 @Entity
-class Feed {
+class Feed : AdapterItem {
     @PrimaryKey
     @field:Element(required = false)
     var title: String = ""

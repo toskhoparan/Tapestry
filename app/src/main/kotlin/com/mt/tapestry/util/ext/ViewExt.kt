@@ -16,6 +16,10 @@ fun View.hide() {
     visibility = View.GONE
 }
 
+fun View.showHide(active: Boolean) {
+    if (active) show() else hide()
+}
+
 fun ImageView.load(url: String?) {
     Glide.with(this.context).load(url).into(this)
 }

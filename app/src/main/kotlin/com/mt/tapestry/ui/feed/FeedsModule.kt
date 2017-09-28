@@ -1,7 +1,9 @@
 package com.mt.tapestry.ui.feed
 
+import com.mt.simplerecycler.RecyclerViewHolder
 import com.mt.tapestry.data.entity.Feed
-import com.mt.tapestry.ui.adapter.RecyclerAdapter
+import com.mt.tapestry.ui.feed.adapter.FeedsAdapter
+import com.mt.tapestry.ui.feed.adapter.ViewHolderFactory
 import dagger.Module
 import dagger.Provides
 
@@ -16,5 +18,8 @@ class FeedsModule {
     fun providePresenter(presenter: FeedsPresenter): FeedsContract.Presenter = presenter
 
     @Provides
-    fun provideAdapter(): RecyclerAdapter<FeedsHolder, Feed> = RecyclerAdapter(FeedsHolder::class.java)
+    fun provideViewHolderFactory(): RecyclerViewHolder.Factory<Feed> = ViewHolderFactory()
+
+    @Provides
+    fun provideAdapter(factory: RecyclerViewHolder.Factory<Feed>) = FeedsAdapter(factory)
 }

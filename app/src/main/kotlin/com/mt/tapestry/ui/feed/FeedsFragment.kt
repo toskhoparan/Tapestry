@@ -2,11 +2,12 @@ package com.mt.tapestry.ui.feed
 
 import com.mt.tapestry.R
 import com.mt.tapestry.data.entity.Feed
-import com.mt.tapestry.ui.adapter.RecyclerAdapter
 import com.mt.tapestry.ui.base.SubscriptionFragment
+import com.mt.tapestry.ui.feed.adapter.FeedsAdapter
 import com.mt.tapestry.ui.navigator.MainNavigator
 import com.mt.tapestry.util.ext.hide
 import com.mt.tapestry.util.ext.show
+import com.mt.tapestry.util.ext.showHide
 import kotlinx.android.synthetic.main.fragment_feeds.*
 import javax.inject.Inject
 
@@ -19,16 +20,9 @@ class FeedsFragment : SubscriptionFragment<FeedsContract.View, FeedsContract.Pre
 
     @Inject override lateinit var presenter: FeedsContract.Presenter
     @Inject lateinit var navigator: MainNavigator
-    @Inject lateinit var adapter: RecyclerAdapter<FeedsHolder, Feed>
+    @Inject lateinit var adapter: FeedsAdapter
 
     override fun setupViews() {
-        adapter.apply {
-            layoutRes = R.layout.item_feed
-            binder = { holder, feed -> holder.bind(feed,
-                    { navigator.shareFeed(feed) },
-                    { navigator.openLink(feed.link)}) }
-        }
-
         recyclerFeeds.setHasFixedSize(true)
         recyclerFeeds.adapter = adapter
     }
@@ -36,7 +30,7 @@ class FeedsFragment : SubscriptionFragment<FeedsContract.View, FeedsContract.Pre
     override fun showFeeds(feeds: MutableList<Feed>) {
         hide(empty, error)
         recyclerFeeds.show()
-        adapter.items = feeds
+        adapter.addAll(feeds)
     }
 
     override fun showNoFeeds() {
@@ -45,7 +39,7 @@ class FeedsFragment : SubscriptionFragment<FeedsContract.View, FeedsContract.Pre
     }
 
     override fun showProgress(active: Boolean) {
-        if (active) progress.show() else progress.hide()
+        progress.showHide(active)
     }
 
     override fun showError() {

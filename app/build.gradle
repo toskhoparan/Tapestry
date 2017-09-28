@@ -51,6 +51,7 @@ kapt {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(":simplerecycler")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${versions.kotlin}"
